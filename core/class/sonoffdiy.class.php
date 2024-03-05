@@ -38,7 +38,13 @@ class sonoffdiy extends eqLogic {
        	
 	}
 /*VB-)*/    
-    public static function cron5() {
+    public static function auto_refresh($p_period) {
+      // ----- On vérifie la periode
+      if (!in_array($p_period, array('5', '10', '15', '60'))) {
+        log::add('sonoffdiy','debug', " Periode d'auto-refresh '".$p_period."' non supportée ! ");
+        return;
+      }
+      
       $eqLogics = eqLogic::byType('sonoffdiy');
       foreach ($eqLogics as $v_eq) {
         // ----- On ne rafraichit que les equipements actifs
@@ -46,16 +52,24 @@ class sonoffdiy extends eqLogic {
           continue;
         }
         
-        // ----- On ne rafraichit que les equipements qui sont configurés pour
-        if ($v_eq->getConfiguration('auto_refresh') == 0) {
-          log::add('sonoffdiy','debug', " Pas d'auto-refresh pour '".$v_eq->getName()."'");
-          continue;
+        // ----- On rafraichit les commandes si c'est la bonne periode
+        if ($v_eq->getConfiguration('auto_refresh') == $p_period) {
+          log::add('sonoffdiy','debug', " Lancer auto-refresh (".$p_period." min) pour '".$v_eq->getName()."'");
+          $v_eq->refresh();
         }
-        
-        // ----- On rafraichit les commandes qui le supporte
-        log::add('sonoffdiy','debug', " Lancer auto-refresh pour '".$v_eq->getName()."'");
-        $v_eq->refresh();
       }
+	}
+    public static function cron5() {
+      sonoffdiy::auto_refresh('5');
+	}
+    public static function cron10() {
+      sonoffdiy::auto_refresh('10');
+	}
+    public static function cron15() {
+      sonoffdiy::auto_refresh('15');
+	}
+    public static function cronHourly() {
+      sonoffdiy::auto_refresh('60');
 	}
 /*VB-)*/    
 	public static function deamon_start($_debug = false) {
@@ -1724,7 +1738,16 @@ class sonoffdiyCmd extends cmd {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
 			//curl_setopt($ch, CURLOPT_HEADER, true); //TRUE pour inclure l'en-tête dans la valeur de retour
-			$result = json_decode(curl_exec($ch),true);
+            
+            // VB-) : on décompose pour tester le curl
+            $v_curl_result = curl_exec($ch);
+            if ($v_curl_result === false) {
+              log::add('sonoffdiy', 'warning', '║ ******** Souci sur la commande '.$this->getName().' de '.$eqLogic->getName().', curl error : "'.curl_error($ch).'" ********');
+              return(false);
+            }
+            // VB-)
+            
+			$result = json_decode($v_curl_result,true);
 			curl_close($ch);
 			
 		if (is_null($result)) {

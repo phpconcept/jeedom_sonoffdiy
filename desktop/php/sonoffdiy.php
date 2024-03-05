@@ -173,7 +173,7 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value)
                     <br>
                     <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_10" value="10" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('10');"/> {{Oui toutes les 10 minutes}}
                     <br>
-                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_30" value="30" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('30');"/> {{Oui toutes les 30 minutes}}
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_15" value="15" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('15');"/> {{Oui toutes les 15 minutes}}
                     <br>
                     <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_60" value="60" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('60');"/> {{Oui toutes les heures}}
                   </div>
