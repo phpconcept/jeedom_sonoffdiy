@@ -1438,8 +1438,12 @@ return [$indice, $derniertime];
 				$this->setConfiguration('LastMAJ', date('Y-m-d H:i:s'));
 			}
 			catch(Exception $exc) {log::add('sonoffdiy', 'error', __('Erreur pour ', __FILE__) . $this->getHumanName() . ' : ' . $exc->getMessage());}
-		
 
+	  // VB-)
+      // ----- Fixer valeurs par defaut si absente
+      if ($this->getConfiguration('auto_refresh', '') == '') {
+        $this->setConfiguration('auto_refresh', 0);
+      }
 	}
 	
 	public function chiffreenOnOff($unouzero) {

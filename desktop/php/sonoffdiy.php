@@ -166,7 +166,16 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value)
                   <br>
                   <label class="col-sm-4 control-label">{{Lecture automatique de l'état}}</label>
                   <div class="col-sm-8">
-                    <input type="checkbox" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="auto_refresh"/> {{Oui toutes les 5 minutes}}
+                    <input type="hidden" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="auto_refresh" onchange="$('#auto_refresh_'+this.value).prop('checked', true);"/> 
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_0" value="0" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('0');"/> {{Non}}
+                    <br>
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_5" value="5" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('5');"/> {{Oui toutes les 5 minutes}}
+                    <br>
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_10" value="10" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('10');"/> {{Oui toutes les 10 minutes}}
+                    <br>
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_30" value="30" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('30');"/> {{Oui toutes les 30 minutes}}
+                    <br>
+                    <input type="radio" class="eqLogicAttr form-control" name="auto_refresh" id="auto_refresh_60" value="60" onClick="$('.eqLogicAttr[data-l1key=configuration][data-l2key=auto_refresh]').value('60');"/> {{Oui toutes les heures}}
                   </div>
                 </div>
 
